@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "luismelo.config-sync",
+  "name": "Omarchy Sync Mesh",
+  "version": "1.3.0",
+  "author": "Luis Melo",
+  "license": "MIT",
+  "description": "Synchronize Omarchy plugins, themes, shortcuts, apps, and portable configuration between machines through a private Git repository.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "Omarchy Sync Mesh",
+    "description": "Review and synchronize an Omarchy configuration mesh",
+    "category": "System",
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "aliases": [
+      "config-sync",
+      "plugin-sync",
+      "sync-mesh",
+      "omarchy-config",
+      "sync",
+      "settings-sync",
+      "dotfiles",
+      "backup",
+      "git-sync",
+      "cloud-sync"
+    ]
+  }
+}
