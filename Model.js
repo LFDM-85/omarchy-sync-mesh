@@ -22,7 +22,7 @@ function stateTitle(state) {
     case "conflicts": return "Merge conflicts"
     case "invalid": return "Not an Omarchy config"
     case "not-configured": return "Not linked"
-    default: return "Omarchy Config Sync"
+    default: return "Omarchy Sync Mesh"
   }
 }
 
@@ -290,7 +290,7 @@ function appendLooseFiles(out, files, both, hiddenMap) {
   for (var i = 0; i < rows.length; i++) {
     var f = rows[i]
     var p = String(f.path || "")
-    if (!p || isBundledPath(p) || p.indexOf("plugins/luismelo.config-sync") === 0) continue
+    if (!p || isBundledPath(p) || p.indexOf("plugins/lfdm85.omarchy-sync-mesh") === 0) continue
     if (isItemHidden("f", p, hiddenMap, f)) continue
     var sum = f.semantic_summary || f.summary || ""
     var fileRow = reviewItem("f", p, p, sum, f.status, "File", both || f.status === "both", 0, false, f.changes || [])
@@ -373,7 +373,7 @@ function buildHiddenItems(theme, shortcuts, bundles, files, allFiles, hiddenMap)
     var f = fList[fi]
     var p = String(f.path || "")
     if (!p || f.status === "identical" || f.status === "machine") continue
-    if (p.indexOf("plugins/luismelo.config-sync") === 0) continue
+    if (p.indexOf("plugins/lfdm85.omarchy-sync-mesh") === 0) continue
     if (isItemHidden("f", p, hiddenMap, f)) {
       var parentHidden = false
       if (p.indexOf("plugins/") === 0) {

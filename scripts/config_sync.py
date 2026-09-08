@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Omarchy config-sync backend.
+"""Omarchy Sync Mesh backend.
 
 Every command prints a single JSON object to stdout. QML and tests both
 speak this interface. Network git operations never prompt; they fail with
@@ -30,7 +30,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-PLUGIN_ID = "luismelo.config-sync"
+PLUGIN_ID = "lfdm85.omarchy-sync-mesh"
 STATE_VERSION = 1
 SESSION_FILE = ".sync-session"
 MARKER_NAME = ".omarchy-config.json"
@@ -103,7 +103,7 @@ class Context:
     def from_env(cls) -> "Context":
         home = Path(os.environ.get("HOME") or Path.home()).expanduser()
         data = Path(os.environ.get("XDG_DATA_HOME") or (home / ".local/share"))
-        state_dir = data / "omarchy-config-sync"
+        state_dir = data / "omarchy-sync-mesh"
         plugin_root = home / ".config" / "omarchy" / "plugins" / PLUGIN_ID
         if not plugin_root.is_dir():
             plugin_root = None
@@ -1962,8 +1962,8 @@ def upsert_shortcut_lines(dest_text: str, source_entries: dict[str, dict[str, An
         body = "".join(out)
         if body and not body.endswith("\n"):
             out.append("\n")
-        if "-- config-sync cherry-pick" not in body:
-            out.append("\n-- config-sync cherry-pick\n")
+        if "-- sync-mesh cherry-pick" not in body:
+            out.append("\n-- sync-mesh cherry-pick\n")
         out.extend(append)
     return "".join(out)
 
@@ -2982,7 +2982,7 @@ def backup_local(ctx: Context, files: list[dict[str, Any]], budget: ByteBudget |
     backup_dir.mkdir(parents=True, exist_ok=True)
     atomic_write_text(
         backup_dir / "README.txt",
-        f"Omarchy config-sync backup of {copied} files at {now_iso()}\n",
+        f"Omarchy Sync Mesh backup of {copied} files at {now_iso()}\n",
         mode=0o600,
         within=ctx.home,
     )
@@ -3953,7 +3953,7 @@ def cmd_unhide(ctx: Context, args: argparse.Namespace) -> dict[str, Any]:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Omarchy config-sync backend")
+    parser = argparse.ArgumentParser(description="Omarchy Sync Mesh backend")
     parser.add_argument(
         "command",
         choices=[

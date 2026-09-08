@@ -116,7 +116,7 @@ class TempHome:
         self.home.mkdir()
         self.data = self.home / ".local" / "share"
         self.data.mkdir(parents=True)
-        self.ctx = cs.Context(home=self.home, state_dir=self.data / "omarchy-config-sync", default_clone=self.data / "omarchy-config-sync" / "repo")
+        self.ctx = cs.Context(home=self.home, state_dir=self.data / "omarchy-sync-mesh", default_clone=self.data / "omarchy-sync-mesh" / "repo")
 
     def close(self) -> None:
         self._tmp.cleanup()
@@ -492,7 +492,7 @@ class InspectAndSyncTests(unittest.TestCase):
             bindings = env.ctx.config_hypr / "bindings.lua"
             text = bindings.read_text(encoding="utf-8")
             bindings.write_text(text + 'o.bind("SUPER + Y", "New shortcut", "true")\n', encoding="utf-8")
-            write(env.ctx.config_plugins / cs.PLUGIN_ID / "manifest.json", json.dumps({"id": cs.PLUGIN_ID, "name": "Config Sync"}))
+            write(env.ctx.config_plugins / cs.PLUGIN_ID / "manifest.json", json.dumps({"id": cs.PLUGIN_ID, "name": "Omarchy Sync Mesh"}))
 
             snap = cs.cmd_snapshot(env.ctx, argparse_ns())
             self.assertEqual(snap["sync_state"], "local-ahead", snap["status"])
@@ -501,7 +501,7 @@ class InspectAndSyncTests(unittest.TestCase):
             self.assertIn("hypr/bindings.lua", published["published"])
             repo_bindings = (repo / "hypr" / "bindings.lua").read_text(encoding="utf-8")
             self.assertIn("SUPER + Y", repo_bindings)
-            # config-sync plugin must NOT be published to repo
+            # Sync Mesh must NOT publish itself to the config repo.
             self.assertFalse((repo / "plugins" / cs.PLUGIN_ID / "manifest.json").is_file())
             self.assertTrue(published["committed"])
             log = git(repo, "log", "-1", "--pretty=%s").stdout
@@ -513,7 +513,7 @@ class InspectAndSyncTests(unittest.TestCase):
             cs.cmd_connect(env.ctx, argparse_ns(args=[str(repo)]))
             cs.cmd_apply(env.ctx, argparse_ns())
 
-            # Put different content locally and on repo in config-sync plugin directory
+            # Put different content locally and in the repo inside Sync Mesh.
             write(env.ctx.config_plugins / cs.PLUGIN_ID / "Panel.qml", "// local version")
             write(repo / "plugins" / cs.PLUGIN_ID / "Panel.qml", "// repo version")
 

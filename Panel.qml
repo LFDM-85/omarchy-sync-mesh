@@ -8,8 +8,8 @@ import "Model.js" as Model
 
 Panel {
   id: root
-  moduleName: "luismelo.config-sync"
-  ipcTarget: "luismelo.config-sync"
+  moduleName: "lfdm85.omarchy-sync-mesh"
+  ipcTarget: "lfdm85.omarchy-sync-mesh"
   manageIpc: false
 
   implicitWidth: button.implicitWidth
@@ -792,7 +792,7 @@ Panel {
   }
 
   IpcHandler {
-    target: "luismelo.config-sync"
+    target: "lfdm85.omarchy-sync-mesh"
     function open(): void { root.open() }
     function close(): void { root.close() }
     function show(): void { root.open() }

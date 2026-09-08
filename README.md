@@ -1,6 +1,6 @@
 # Omarchy Sync Mesh
 
-`luismelo.config-sync` is an Omarchy bar widget that keeps portable Omarchy
+`lfdm85.omarchy-sync-mesh` is an Omarchy bar widget that keeps portable Omarchy
 configuration aligned across machines through a private Git repository. It
 syncs plugins, themes, shortcuts, shell settings, supported application
 profiles, terminal settings, hooks, and helper scripts.
@@ -15,7 +15,7 @@ The widget is placed on the right side of the bar by default. Move it at any
 time with Omarchy's bar controls.
 
 ```bash
-omarchy bar move luismelo.config-sync --section left
+omarchy bar move lfdm85.omarchy-sync-mesh --section left
 ```
 
 ## First use
@@ -49,7 +49,7 @@ helper. The widget never requests or stores a GitHub password.
 ## Removal
 
 ```bash
-omarchy plugin remove luismelo.config-sync --yes
+omarchy plugin remove lfdm85.omarchy-sync-mesh --yes
 ```
 
 Removal deletes only the installed widget and its Sync Mesh state. It does not
@@ -62,5 +62,5 @@ omarchy plugin validate .
 python3 -m unittest discover -s tests -q
 ```
 
-This project is a derivative of Dmytro Gladkyi's Omarchy Config Sync plugin
-and remains available under the MIT license. See [LICENSE](LICENSE).
+This project builds on original work by Dmytro Gladkyi and remains available
+under the MIT license. See [LICENSE](LICENSE).

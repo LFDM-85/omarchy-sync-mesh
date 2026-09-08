@@ -71,7 +71,7 @@ An empty repo prints nothing and exits 0. An auth error means fix Step 2 before 
 
 ---
 
-## Step 3 — Install Config Sync (if it is not already on the bar)
+## Step 3 — Install Omarchy Sync Mesh (if it is not already on the bar)
 
 ```bash
 omarchy plugin add https://github.com/LFDM-85/omarchy-sync-mesh.git --enable --yes
@@ -80,7 +80,7 @@ omarchy plugin add https://github.com/LFDM-85/omarchy-sync-mesh.git --enable --y
 You should see a cloud-sync icon on the right of the Omarchy bar. If it is missing:
 
 ```bash
-omarchy plugin enable luismelo.config-sync --section right
+omarchy plugin enable lfdm85.omarchy-sync-mesh --section right
 omarchy-shell shell rescanPlugins
 ```
 
@@ -131,7 +131,7 @@ When the badge lights up, **Review Changes** (or press `c`) opens a checklist. Y
 
 The selected Omarchy theme (`omarchy theme current`) is part of that list. Stock themes only need the name. If you customized a theme under `~/.config/omarchy/themes/<slug>/`, those overlay files sync too (wallpapers and preview images are skipped so the repo stays small). Apply runs `omarchy theme set` on the other machine.
 
-Both machines should use the **same Sync Mesh version** (shown in the Sync tab). Update with `omarchy plugin update luismelo.config-sync --yes`, then restart the shell if prompted. Removing the plugin also forgets the linked repo, so a reinstall starts at Connect.
+Both machines should use the **same Sync Mesh version** (shown in the Sync tab). Update with `omarchy plugin update lfdm85.omarchy-sync-mesh --yes`, then restart the shell if prompted. Removing the plugin also forgets the linked repo, so a reinstall starts at Connect.
 
 | You did this | Open the icon | Press |
 | --- | --- | --- |
