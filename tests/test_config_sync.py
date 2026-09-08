@@ -748,6 +748,16 @@ class InspectAndSyncTests(unittest.TestCase):
             self.assertTrue((repo / "plugins" / "other.widget" / "manifest.json").is_file())
             self.assertNotIn("changed", (repo / "plugins" / "demo.widget" / "Main.qml").read_text(encoding="utf-8"))
 
+    def test_connect_reads_one_newline_terminated_stdin_value(self) -> None:
+        with TempHome() as env:
+            repo = make_config_repo(env.home / "stdin-config")
+            # The QML process keeps stdin open after sending this line. A full
+            # read would also consume the trailing text and fail to connect.
+            with patch.object(cs.sys, "stdin", io.StringIO(str(repo) + "\nignored")):
+                snap = cs.cmd_connect(env.ctx, argparse_ns(args=[], stdin=True))
+            self.assertTrue(snap["ok"], snap)
+            self.assertTrue(snap["configured"])
+
     def test_connect_empty_repo_and_publish_seeds(self) -> None:
         with TempHome() as env:
             empty = env.home / "empty"
