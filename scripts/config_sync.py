@@ -83,7 +83,8 @@ FILE_SUMMARIES = {
 
 MACHINE_LOCAL_PATHS = {"hypr/monitors.lua"}
 THEME_REL = "omarchy/theme.name"
-THEME_SKIP_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp", ".tif", ".tiff"}
+AI_ROOTS = (".claude", ".codex", ".agents", ".gemini", ".hermes")
+AI_DIRS = ("skills", "agents", "commands", "rules", "memories")
 
 
 class SyncError(Exception):
@@ -1242,17 +1243,8 @@ def theme_display_name(slug: str) -> str:
     return " ".join(part[:1].upper() + part[1:] for part in slug.replace("_", "-").split("-") if part)
 
 
-def is_theme_asset(path: Path) -> bool:
-    return path.suffix.lower() in THEME_SKIP_SUFFIXES
-
-
 def iter_theme_files(root: Path) -> list[Path]:
-    out = []
-    for path in iter_files(root):
-        if is_theme_asset(path):
-            continue
-        out.append(path)
-    return out
+    return iter_files(root)
 
 
 def terminal_map(ctx: Context) -> dict[str, Path]:
@@ -1420,6 +1412,20 @@ def collect_inventory(ctx: Context, repo: Path) -> list[dict[str, Any]]:
     for rel in PACKAGE_RELS:
         add(rel, ctx.package_cache / Path(rel).name, repo / rel, "apps")
 
+    # Only instruction/configuration Markdown, never sessions, plans or credentials.
+    for root in AI_ROOTS:
+        local_root = ctx.home / root
+        repo_root = repo / "ai" / root[1:]
+        rels: set[str] = set()
+        for base in (local_root, repo_root):
+            if base.is_dir() and not base.is_symlink():
+                rels.update(p.name for p in base.glob("*.md") if p.is_file() and not p.is_symlink())
+            for directory in AI_DIRS:
+                rels.update(rel_posix(p, base) for p in iter_files(base / directory) if p.suffix.lower() == ".md")
+        for rel in sorted(rels):
+            name = f"ai/{root[1:]}/{rel}"
+            add(name, local_root / rel, repo_root / rel, "ai")
+
     bin_names: set[str] = set()
     repo_bin = repo / "bin"
     if repo_bin.is_dir():
@@ -1437,6 +1443,8 @@ def collect_inventory(ctx: Context, repo: Path) -> list[dict[str, Any]]:
         if slug:
             slugs.add(slug)
     repo_themes = repo / "omarchy" / "themes"
+    if ctx.user_themes.is_dir():
+        slugs.update(p.name for p in ctx.user_themes.iterdir() if p.is_dir() and not p.is_symlink() and not p.name.startswith("."))
     if repo_themes.is_dir():
         slugs.update(p.name for p in repo_themes.iterdir() if p.is_dir() and not p.is_symlink() and not p.name.startswith("."))
     for slug in sorted(slugs):

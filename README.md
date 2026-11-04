@@ -8,7 +8,7 @@ profiles, terminal settings, hooks, and helper scripts.
 ## Install
 
 ```bash
-omarchy plugin add https://github.com/LFDM-85/omarchy-sync-mesh.git --enable
+omarchy plugin add https://github.com/LFDM-85/omarchy-sync-mesh.git --enable --yes
 ```
 
 The widget is placed on the right side of the bar by default. Move it at any
@@ -35,16 +35,35 @@ it never assumes a repository.
 Display layout is machine-specific by default. It is only applied when you
 explicitly opt in.
 
+For the full setup, authentication and recovery walkthrough, see
+[GETTING-STARTED.md](GETTING-STARTED.md). Use **Publish this machine** on the
+source, then **Refresh & Apply** on the destination. Review is required if
+the destination already has local changes. The app lists are captured, but
+installing applications is a separate action in the panel.
+
 ## What it syncs
 
 - Hyprland shortcuts and portable configuration
-- Omarchy shell settings, themes, hooks, extensions, and branding
+- Omarchy shell settings, all user themes including images, hooks, extensions,
+  and branding; the selected theme is applied when available
 - Portable local plugins (excluding Sync Mesh itself)
+- AI Markdown: top-level `.md` files and Markdown under `skills/`, `agents/`,
+  `commands/`, `rules/` and `memories/` in `~/.claude`, `~/.codex`,
+  `~/.agents`, `~/.gemini` and `~/.hermes`. These are stored under `ai/` in
+  the profile and restored to their original directories.
 - Terminal configuration and local helper scripts
 - Installed application manifests for a new-machine bootstrap
 
 Git credentials are handled by your existing SSH setup or Git credential
 helper. The widget never requests or stores a GitHub password.
+
+Markdown instructions can contain private information or secrets. Review the
+profile before publishing; the plugin does not scan contents for secrets. Use a
+private repository. Sessions, plans, non-Markdown AI settings, symlinks and
+project-specific files outside the listed directories are not included. Files
+over 50 MiB are skipped; the profile and each operation have a 512 MiB limit.
+Monitor layouts are excluded by default. Plugins and AI instructions can run
+or direct code: only apply profiles you trust.
 
 ## Removal
 

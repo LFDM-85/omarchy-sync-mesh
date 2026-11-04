@@ -708,7 +708,7 @@ class InspectAndSyncTests(unittest.TestCase):
             self.assertIn("omarchy/theme.name", published["published"])
             self.assertEqual((repo / "omarchy" / "theme.name").read_text(encoding="utf-8").strip(), "catppuccin")
             self.assertTrue((repo / "omarchy" / "themes" / "catppuccin" / "colors.toml").is_file())
-            self.assertFalse((repo / "omarchy" / "themes" / "catppuccin" / "preview.png").exists())
+            self.assertTrue((repo / "omarchy" / "themes" / "catppuccin" / "preview.png").exists())
             # Incoming apply onto a machine still on tokyo-night
             write(env.ctx.theme_name_path, "tokyo-night\n")
             applied = cs.cmd_apply(env.ctx, argparse_ns(explicit=True, files="", theme=True))
@@ -718,6 +718,24 @@ class InspectAndSyncTests(unittest.TestCase):
             inspect = cs.inspect_repo(env.ctx, repo)
             self.assertEqual(inspect["theme"]["slug"], "catppuccin")
             self.assertEqual(inspect["theme"]["display"], "Catppuccin")
+
+    def test_profile_round_trip_includes_ai_and_inactive_theme(self) -> None:
+        with TempHome() as source, TempHome() as target:
+            repo = make_config_repo(source.home / "cfg")
+            write(source.home / ".claude" / "CLAUDE.md", "instructions")
+            write(source.home / ".codex" / "skills" / "example" / "SKILL.md", "skill")
+            write(source.home / ".claude" / "plans" / "private.md", "plan")
+            write(source.ctx.user_themes / "other" / "backgrounds" / "wall.png", "image")
+            write(source.ctx.config_plugins / "custom" / "manifest.json", '{"id":"custom"}')
+            cs.cmd_connect(source.ctx, argparse_ns(args=[str(repo)]))
+            cs.cmd_resync(source.ctx, argparse_ns(side="local"))
+            self.assertFalse((repo / "ai" / "claude" / "plans" / "private.md").exists())
+            cs.cmd_connect(target.ctx, argparse_ns(args=[str(repo)]))
+            cs.cmd_resync(target.ctx, argparse_ns(side="repo"))
+            self.assertEqual((target.home / ".claude" / "CLAUDE.md").read_text(), "instructions")
+            self.assertEqual((target.home / ".codex" / "skills" / "example" / "SKILL.md").read_text(), "skill")
+            self.assertEqual((target.ctx.user_themes / "other" / "backgrounds" / "wall.png").read_text(), "image")
+            self.assertTrue((target.ctx.config_plugins / "custom" / "manifest.json").exists())
 
     def test_cherrypick_one_shortcut_and_one_plugin(self) -> None:
         with TempHome() as env:

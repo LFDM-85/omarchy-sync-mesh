@@ -129,7 +129,7 @@ After that, daily life is:
 
 When the badge lights up, **Review Changes** (or press `c`) opens a checklist. You can apply or publish only some shortcuts, only certain plugins, the selected **theme**, or only some config files. Unchecked items stay as they are on that machine.
 
-The selected Omarchy theme (`omarchy theme current`) is part of that list. Stock themes only need the name. If you customized a theme under `~/.config/omarchy/themes/<slug>/`, those overlay files sync too (wallpapers and preview images are skipped so the repo stays small). Apply runs `omarchy theme set` on the other machine.
+All user themes under `~/.config/omarchy/themes/`, including wallpapers and previews, are included. The selected theme name is included too; applying it runs `omarchy theme set` on the other machine. The README lists the AI Markdown directories and size limits.
 
 Both machines should use the **same Sync Mesh version** (shown in the Sync tab). Update with `omarchy plugin update lfdm85.omarchy-sync-mesh --yes`, then restart the shell if prompted. Removing the plugin also forgets the linked repo, so a reinstall starts at Connect.
 
