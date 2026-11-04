@@ -61,7 +61,7 @@ Markdown instructions can contain private information or secrets. Review the
 profile before publishing; the plugin does not scan contents for secrets. Use a
 private repository. Sessions, plans, non-Markdown AI settings, symlinks and
 project-specific files outside the listed directories are not included. Files
-over 50 MiB are skipped; the profile and each operation have a 512 MiB limit.
+over 50 MiB are skipped; the local profile clone has a 2 GiB limit and each operation has a 512 MiB limit.
 Monitor layouts are excluded by default. Plugins and AI instructions can run
 or direct code: only apply profiles you trust.
 

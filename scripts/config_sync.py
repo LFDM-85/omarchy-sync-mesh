@@ -48,7 +48,7 @@ MAX_SYNC_FILE_BYTES = 50 * 1024 * 1024
 MAX_URL_INPUT_BYTES = 64 * 1024
 # Hard on-disk budget for the managed clone while git (clone/fetch/pull/merge/
 # checkout) runs against an untrusted remote, and for the clone at rest.
-MAX_REPO_DISK_BYTES = 512 * 1024 * 1024
+MAX_REPO_DISK_BYTES = 2 * 1024 * 1024 * 1024
 # Aggregate bytes one apply/publish may copy (backup + installed files), so the
 # per-file cap cannot be multiplied by the inventory cap.
 MAX_SYNC_TOTAL_BYTES = 512 * 1024 * 1024
@@ -3494,11 +3494,9 @@ def cmd_resync(ctx: Context, args: argparse.Namespace) -> dict[str, Any]:
         for item in (diff.get("shortcuts") or [])
         if not item.get("hidden") and item.get("status") in wanted_status
     ]
-    plugins = [
-        item["plugin_id"]
-        for item in (diff.get("bundles") or [])
-        if not item.get("hidden") and item.get("kind") == "plugin" and item.get("status") in wanted_status and item.get("plugin_id")
-    ]
+    # Files are selected individually above; expanding plugin bundles here
+    # would also include deletions that were never explicitly selected.
+    plugins: list[str] = []
     theme = any(item["path"] == THEME_REL and not item.get("hidden") and item.get("status") in wanted_status for item in diff["files"])
 
     nested = argparse.Namespace(
