@@ -110,7 +110,7 @@ This is the last “are you sure?” before your desktop layout lives on GitHub.
 
 **Display layout** (`hypr/monitors.lua`) stays on this machine. A second machine usually has different screens. Turn on **Include display layout** on the Changes tab only if you mean it.
 
-When it looks right, click **Publish this machine**. Confirm. The plugin copies those files into the private repo, commits, and pushes.
+When it looks right, click **Send this machine**. Confirm. The plugin copies those files into the private repo, commits, and pushes.
 
 Your GitHub repo should now contain `hypr/`, `omarchy/`, `plugins/`, and so on — still **private**.
 

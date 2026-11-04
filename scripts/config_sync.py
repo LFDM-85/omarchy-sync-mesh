@@ -2459,12 +2459,7 @@ def annotate_diff(ctx: Context, repo: Path, state: dict[str, Any]) -> dict[str, 
             status == "repo" and not item["repo_exists"]
         )
         if status not in {"identical", "machine"}:
-            item["preview"] = unified_preview(
-                Path(item["local_path"]),
-                Path(item["repo_path"]),
-                local_within=ctx.home,
-                repo_within=repo,
-            )
+            item["preview"] = ""  # The panel uses semantic changes, not full file diffs.
             sem_summary, changes = summarize_file_diff(
                 item["path"],
                 Path(item["local_path"]),

@@ -1077,7 +1077,7 @@ Panel {
 
             GuideStep {
               step: "3"
-              title: "Review, then Publish this machine"
+              title: "Review, then Send this machine"
               body: "Empty repo: the tabs show this machine. Publish seeds GitHub (still private). Next machine: Connect the same URL and press Apply. Display layout is skipped unless you opt in."
             }
           }
@@ -1241,7 +1241,7 @@ Panel {
         text: {
           if (root.busy) return "Checking the source repository…"
           if (root.alarming) return "This machine and the repository both changed. Open Choose to decide what to keep."
-          if (root.pending) return root.incomingCount + " updates are ready from the source. Use Refresh & Apply to install them."
+          if (root.pending) return "To receive: " + root.incomingCount + " · To send: " + root.outgoingCount + ". Open Choose to review the items."
           var commit = root.status.remote_head || root.status.head || "current commit"
           return "Up to date with the source repository (" + commit + ")."
         }
@@ -1271,14 +1271,14 @@ Panel {
         QuickPill {
           width: parent.pillW
           icon: "󰅧"
-          label: "Signals"
+          label: "To receive"
           value: String(root.incomingCount)
           highlightColor: root.incomingCount > 0 ? root.accent : root.foreground
         }
         QuickPill {
           width: parent.pillW
           icon: "󰈸"
-          label: "Publish"
+          label: "To send"
           value: String(root.outgoingCount)
           highlightColor: root.outgoingCount > 0 ? root.accent : root.foreground
         }
@@ -1293,7 +1293,7 @@ Panel {
         Button {
           width: primaryActions.actionWidth
           visible: root.configured
-          text: "Refresh & Apply"
+          text: "Receive from repo"
           iconText: "󰑐"
           tooltipText: "Fetch the source repo and apply every safe portable update"
           foreground: root.foreground
@@ -1306,7 +1306,7 @@ Panel {
         Button {
           width: primaryActions.actionWidth
           visible: root.configured
-          text: "Publish this machine"
+          text: "Send this machine"
           iconText: "󰓂"
           tooltipText: "Use this machine as the source, then commit and push every portable config"
           foreground: root.foreground
@@ -1537,14 +1537,14 @@ Panel {
         }
 
         ChangeSection {
-          title: "Incoming"
-          subtitle: "From the repo — Apply"
+          title: "Receive"
+          subtitle: "Repo → this machine"
           mixed: true
           files: root.incomingItems
         }
         ChangeSection {
-          title: "Outgoing"
-          subtitle: "This machine — Publish"
+          title: "Send"
+          subtitle: "This machine → repo"
           mixed: true
           files: root.outgoingItems
         }
@@ -2199,7 +2199,7 @@ Panel {
         width: parent.width
         textFormat: Text.PlainText
         text: root.sourceMachine
-          ? "This is the source profile. It lists everything published to the repo; applying items here is intentionally disabled. Use Publish this machine after changing this profile."
+          ? "This is the source profile. It lists everything published to the repo; applying items here is intentionally disabled. Use Send this machine after changing this profile."
           : "All configuration areas tracked by the repo and this machine, grouped by category. Press any category to review changes and inspect settings."
         color: root.foreground
         font.family: root.fontFamily

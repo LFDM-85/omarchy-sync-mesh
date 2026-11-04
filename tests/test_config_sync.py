@@ -286,6 +286,16 @@ class ShortcutTests(unittest.TestCase):
             self.assertEqual(snap["diff"]["shortcuts"], [])
             self.assertEqual(snap["status"]["repo_changes"], 0)
 
+    def test_snapshot_omits_unused_full_file_previews(self) -> None:
+        with TempHome() as env:
+            repo = make_config_repo(env.home / "cfg")
+            cs.cmd_connect(env.ctx, argparse_ns(args=[str(repo)]))
+            write(env.ctx.config_omarchy / "shell.json", '{"bar": {"layout": {"right": ["widget"]}}}')
+            snap = cs.cmd_snapshot(env.ctx, argparse_ns())
+            shell = next(f for f in snap["diff"]["files"] if f["path"] == "omarchy/shell.json")
+            self.assertNotEqual(shell["status"], "identical")
+            self.assertEqual(shell["preview"], "")
+
     def test_incoming_changed_and_added_are_not_both(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             local = Path(tmp) / "local.lua"

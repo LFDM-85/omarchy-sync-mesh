@@ -24,10 +24,10 @@ Click the Sync Mesh icon and paste the URL of a **private** GitHub repository
 that will contain your Omarchy profile. The plugin always asks for this URL;
 it never assumes a repository.
 
-- On the source machine, select **Publish this machine**. It captures the
+- On the source machine, select **Send this machine**. It captures the
   portable profile, commits it, and pushes it to your private repo.
 - On another machine, install the plugin, enter the same repo URL, then select
-  **Refresh & Apply**. A timestamped backup is created before incoming files
+  **Receive from repo**. A timestamped backup is created before incoming files
   are applied.
 - Use **Choose** to inspect changes and decide what to keep when both the
   machine and repository changed the same configuration.
@@ -36,8 +36,8 @@ Display layout is machine-specific by default. It is only applied when you
 explicitly opt in.
 
 For the full setup, authentication and recovery walkthrough, see
-[GETTING-STARTED.md](GETTING-STARTED.md). Use **Publish this machine** on the
-source, then **Refresh & Apply** on the destination. Review is required if
+[GETTING-STARTED.md](GETTING-STARTED.md). Use **Send this machine** on the
+source, then **Receive from repo** on the destination. Review is required if
 the destination already has local changes. The app lists are captured, but
 installing applications is a separate action in the panel.
 
